@@ -3,6 +3,8 @@ import os
 import re
 from urllib.parse import urlparse
 
+from shutil import rmtree
+
 import numpy as np
 
 URL_REGEX = r'((http|ftp|https):\/\/([\w\-_]+(?:(?:\.[\w\-_]+)+))([\w\-\.,@?^=%&:/~\+#]*[\w\-\@?^=%&/~\+#])?)'
@@ -178,14 +180,22 @@ def load_positive_examples(start_path="positive_examples"):
 
 def load_negative_examples(start_path="negative_examples"):
     X = []
+    for path in os.walk(start_path):
+        root, dirs, files = path
+        if len(files) == 0:
+            continue
+
+        if "inbox" not in root or "notes_inbox" in root:
+            rmtree(root)
 
     for path in os.walk(start_path):
         root, dirs, files = path
         for file in files:
-            if len(X) == MAX_NEGATIVE_EXAMPLES:
-                break
             file = os.path.join(root, file)
-            mail = Mail.load(file)
+            try:
+                mail = Mail.load(file)
+            except AssertionError:
+                continue
             X.append(extract_features(mail, 0))
     X = np.array(X)
 
@@ -204,7 +214,6 @@ def get_data():
         print(f"failed with exception {ex}")
         print("extracting dataset ...", end="")
         positive = load_positive_examples()
-        print(positive.shape)
         negative = load_negative_examples()
         if len(positive) > len(negative):
             p = len(negative) * K
