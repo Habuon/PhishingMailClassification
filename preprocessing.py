@@ -146,7 +146,7 @@ def check_confirm_words_presence(mail):
 
 
 def extract_features(mail, y_value):
-    features = []
+    features = [1]  # interceptor
     features = features + check_for_urls_with_ip(mail)
     features = features + check_link_in_href(mail)
     features = features + check_catchphrase_inside_link(mail)
