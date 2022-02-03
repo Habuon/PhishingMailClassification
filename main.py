@@ -2,6 +2,7 @@ from sklearn.model_selection import train_test_split
 
 import numpy as np
 
+from models.BaseLine import BaseLine
 from models.KMeans import KMeans
 from models.MLP import MLP
 from models.RFC import RFC
@@ -30,34 +31,21 @@ def score(y, value):
 
 def main():
 
-    X = get_data()
-    np.random.shuffle(X)
-    y = X[:, -1]
-    X = np.delete(X, -1, 1)
-    train_x, test_x, train_y, test_y = train_test_split(X, y, test_size=0.25, random_state=1)
+    x = get_data()
+    np.random.shuffle(x)
+    y = x[:, -1]
+    x = np.delete(x, -1, 1)
+    train_x, test_x, train_y, test_y = train_test_split(x, y, test_size=0.25, random_state=1)
 
-    print("baseline: ", score(test_y, baseline(test_x, test_y)))
-    print()
+    models = [BaseLine(), SVC(), RFC(), KMeans(), MLP(train_x.shape[1])]
+    finetune = [False, False, False, False, False]
 
-    svc = SVC()
-    svc.fit(train_x, train_y)
-    msg = f"Test accuracy: {svc.evaluate(test_x, test_y)}"
-    print(svc.get_banner(msg))
-
-    rfc = RFC()
-    rfc.fit(train_x, train_y)
-    msg = f"Test accuracy: {rfc.evaluate(test_x, test_y)}"
-    print(rfc.get_banner(msg))
-
-    mlp = MLP(train_x.shape[1])
-    mlp.fit(train_x, train_y)
-    msg = f"Test accuracy: {mlp.evaluate(test_x, test_y)}"
-    print(mlp.get_banner(msg))
-
-    kmeans = KMeans()
-    kmeans.fit(train_x, train_y)
-    msg = f"Test accuracy: {kmeans.evaluate(test_x, test_y)}"
-    print(kmeans.get_banner(msg))
+    for i in range(len(models)):
+        model = models[i]
+        model.fit(train_x, train_y, finetune[i])
+        msg = f"Test accuracy: {model.evaluate(test_x, test_y)}"
+        print(model.get_banner(msg))
 
 
 main()
+
