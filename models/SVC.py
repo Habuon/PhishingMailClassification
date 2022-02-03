@@ -5,9 +5,9 @@ from models.AbstractModel import AbstractModel
 
 
 class SVC(AbstractModel):
-    KERNELS = ['linear', 'poly', 'rbf', 'sigmoid', 'precomputed']
-    MAX_C = 25
-    MAX_GAMMA = 25
+    KERNELS = ['linear', 'rbf', 'sigmoid']
+    MAX_C = 5
+    MAX_GAMMA = 5
     STEP_C = 1
     STEP_G = 1
 
@@ -49,6 +49,7 @@ class SVC(AbstractModel):
                         c_g_k = [c, gamma, kernel]
                         self.svc = svc
                         self.c_g_k = c_g_k
+                        print(c, gamma, kernel, score)
                     gamma += self.STEP_G
                 c += self.STEP_C
 
