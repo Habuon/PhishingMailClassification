@@ -5,7 +5,7 @@ class AbstractModel(ABC):
     BANNER_WIDTH = 50
 
     @abstractmethod
-    def fit(self, train_x, train_y):
+    def fit(self, train_x, train_y, finetune=False):
         pass
 
     @abstractmethod
