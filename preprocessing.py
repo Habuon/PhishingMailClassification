@@ -55,6 +55,9 @@ class Mail:
         self.attachments = attachments
         self.text_type = text_type
 
+    def has_attachments(self):
+        return len(self.attachments) != 0
+
 
 def check_for_urls_with_ip(mail):
     ip_candidates = re.findall(r"((www\.|http://|https://)\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", mail.body)
@@ -145,6 +148,10 @@ def check_confirm_words_presence(mail):
     return [count]
 
 
+def check_attachments_presence(mail):
+    return [1 if mail.has_attachments() else 0]
+
+
 def extract_features(mail, y_value):
     features = [1]  # interceptor
     features = features + check_for_urls_with_ip(mail)
@@ -157,6 +164,7 @@ def extract_features(mail, y_value):
     features = features + check_verification_words_presence(mail)
     features = features + check_login_words_presence(mail)
     features = features + check_confirm_words_presence(mail)
+    features = features + check_attachments_presence(mail)
 
     return features + [y_value]
 
@@ -203,7 +211,7 @@ def load_negative_examples(start_path="negative_examples"):
 
 
 def get_data():
-    K = 2  # pomer negativnych k pozitivnym
+    K = 3  # pomer negativnych k pozitivnym
 
     try:
         print("loading ... ", end="")
