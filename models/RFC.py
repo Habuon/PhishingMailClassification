@@ -11,7 +11,7 @@ class RFC(AbstractModel):
     STEP_D = 1
 
     def __init__(self):
-        self.e_d = [18, 12]
+        self.e_d = [26, 12]
         e, d = self.e_d
         self.rfc = RandomForestClassifier(n_estimators=e, max_depth=d)
         self.trained = False
@@ -47,6 +47,7 @@ class RFC(AbstractModel):
                     e_d = [e, d]
                     self.rfc = rfc
                     self.e_d = e_d
+                    print(e_d, score)
                 d += self.STEP_D
             e += self.STEP_E
         print(f"for rfc best e : {e_d[0]} and best d: {e_d[1]}")
