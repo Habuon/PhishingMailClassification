@@ -5,12 +5,11 @@ from models.AbstractModel import AbstractModel
 
 
 class KMeans(AbstractModel):
-    MAX_N = 100
+    MAX_N = 300
     STEP_N = 1
-    ATTEMPTS = 10
 
     def __init__(self):
-        self.n_clusters = 88
+        self.n_clusters = 295
         self.kmeans = None
         self.labels = None
         self.trained = False
