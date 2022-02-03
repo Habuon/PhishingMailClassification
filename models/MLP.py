@@ -18,7 +18,7 @@ class MLP(AbstractModel):
         self.history = None
         self.trained = False
 
-    def fit(self, train_x, train_y):
+    def fit(self, train_x, train_y, finetune=False):
         self.trained = True
         self.history = self.mlp.fit(train_x, tf.keras.utils.to_categorical(train_y), epochs=50,
                                     validation_split=0.1, verbose=False)
