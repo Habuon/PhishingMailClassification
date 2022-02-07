@@ -11,24 +11,6 @@ from models.SVC import SVC
 from preprocessing import get_data
 
 
-def baseline(X, y):
-    counts = dict()
-    for e in y:
-        if e not in counts:
-            counts[e] = 0
-        counts[e] += 1
-    return sorted(counts.keys(), key=lambda x: counts[x], reverse=True)[0]
-
-
-def score(y, value):
-    counts = dict()
-    for e in y:
-        if e not in counts:
-            counts[e] = 0
-        counts[e] += 1
-    return counts[value] / len(y)
-
-
 def main():
 
     x = get_data()
